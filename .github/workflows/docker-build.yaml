@@ -41,7 +41,7 @@ jobs:
         env:
           AWS_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:latest . -f Dockerfile.prod
+          docker build -t $AWS_ECR_REGISTRY/$AWS_ECR_REPOSITORY:latest . 
 
       - name: Push Image
         id: push-image
