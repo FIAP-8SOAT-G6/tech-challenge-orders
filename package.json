@@ -7,7 +7,8 @@
     "build": "tsc",
     "test": "mocha --configs=.mocharc.json",
     "test:bdd": "cucumber-js",
-    "coverage": "nyc --reporter=text --reporter=lcov npm run test"
+    "coverage": "nyc --reporter=text --reporter=lcov npm run test",
+    "compose:up": "docker compose --env-file .env up --build"
   },
   "repository": {
     "type": "git",

@@ -12,12 +12,12 @@ type DatabaseConfig = {
 
 const config: { [key: string]: DatabaseConfig } = {
   development: {
-    username: process.env.POSTGRES_USER!,
-    password: process.env.POSTGRES_PASSWORD!,
-    database: process.env.POSTGRES_DB!,
-    host: process.env.POSTGRES_HOST!,
-    dialect: "postgres",
-    port: Number(process.env.POSTGRES_PORT)!
+    username: process.env.DATABASE_USER!,
+    password: process.env.DATABASE_PASSWORD!,
+    database: process.env.DATABASE_NAME!,
+    host: process.env.DATABASE_HOST!,
+    dialect: process.env.DATABASE_DIALECT! as Dialect,
+    port: Number(process.env.DATABASE_PORT)!
   }
 };
 
