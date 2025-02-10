@@ -86,11 +86,14 @@ services:
       - fiap
     expose:
       - ${ORDERS_CONTAINER_PORT_SERVER}
+    volumes:
+      - node_data:/home/node/app
 
 volumes:
   lanchonete_db_data:
   lanchonete_node_data:
   db_data:
+  node_data:
 
 networks:
   fiap:
