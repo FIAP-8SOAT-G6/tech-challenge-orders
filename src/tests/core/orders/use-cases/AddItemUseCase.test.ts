@@ -96,7 +96,7 @@ describe("Add Item", () => {
     const addItemUseCase = setupAddItemUseCase();
 
     const product = await createProduct();
-    const unexistingOrderId = -1;
+    const unexistingOrderId = "-1";
     const itemDTO = new ItemDTO({
       productId: product.id,
       quantity: 2,

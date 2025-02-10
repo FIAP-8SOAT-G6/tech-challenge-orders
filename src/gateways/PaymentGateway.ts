@@ -10,7 +10,7 @@ export class PaymentGateway implements PaymentGatewayInterface {
     private paymentSystem: PaymentSystem
   ) {}
 
-  async performPayment(orderId: number): Promise<string> {
+  async performPayment(orderId: string): Promise<string> {
     const orderDTO = await this.orderGateway.getOrder(orderId);
     const order = new Order({
       id: orderDTO!.id,
@@ -42,7 +42,7 @@ export class PaymentGateway implements PaymentGatewayInterface {
     );
 
     return new PaymentDTO({
-      orderId: Number(paymentDetails?.externalReference),
+      orderId: String(paymentDetails?.externalReference),
       paymentId: paymentDetails?.id,
       paymentStatus: paymentDetails?.paymentStatus,
       timestamp: paymentDetails?.approvalDate

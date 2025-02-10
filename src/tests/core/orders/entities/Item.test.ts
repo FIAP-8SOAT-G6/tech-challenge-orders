@@ -8,8 +8,8 @@ describe("Item", () => {
     expect(
       () =>
         new Item({
-          id: 123,
-          orderId: 1,
+          id: "123",
+          orderId: "1",
           productId: 1,
           quantity: 1,
           unitPrice: 12.99,
@@ -23,8 +23,8 @@ describe("Item", () => {
     expect(
       () =>
         new Item({
-          id: 123,
-          orderId: 1,
+          id: "123",
+          orderId: "1",
           productId: 1,
           quantity: 0,
           unitPrice: 12.99,
@@ -36,8 +36,8 @@ describe("Item", () => {
 
   it("should get attributes", () => {
     const item = new Item({
-      id: 123,
-      orderId: 1,
+      id: "123",
+      orderId: "1",
       productId: 1,
       quantity: 1,
       unitPrice: 12.99,

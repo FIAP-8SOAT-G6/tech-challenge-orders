@@ -28,6 +28,7 @@ import { PaymentSystem } from "../interfaces/PaymentSystem";
 import { PaymentGateway } from "../gateways/PaymentGateway";
 import { CustomersSource } from "../interfaces/CustomersSource";
 import { ProductsSource } from "../interfaces/ProductsSource";
+import MockPaymentGateway from "../gateways/MockPaymentGateway";
 
 export class OrdersFactory {
   public static makeCreateOrder(

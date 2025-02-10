@@ -4,8 +4,8 @@ import request from "supertest";
 import app from "../../../../../server";
 import CustomersService from "../../../../../external/CustomersService";
 import Sinon from "sinon";
-import OrderModelDataSource from "../../../../../external/SequelizeOrderDataSource";
 import OrderDTO from "../../../../../core/orders/dto/OrderDTO";
+import MongoOrderDataSource from "../../../../../external/MongoOrderDataSource";
 
 const customers = [{ id: 1, name: "Alice" }];
 Sinon.replace(
@@ -16,9 +16,9 @@ Sinon.replace(
   })
 );
 
-Sinon.stub(OrderModelDataSource.prototype, "create").callsFake(
+Sinon.stub(MongoOrderDataSource.prototype, "create").callsFake(
   (orderDTO: OrderDTO) =>
-    Promise.resolve({ id: Math.trunc(Math.random() * 100), ...orderDTO }) as any
+    Promise.resolve({ id: "Math.trunc(Math.random() * 100)", ...orderDTO }) as any
 );
 
 Given("I am an anonymous user", function () {

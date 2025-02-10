@@ -1,8 +1,8 @@
 import MissingPropertyError from "../../common/exceptions/MissingPropertyError";
 
 export type ItemParams = {
-  id?: number;
-  orderId: number;
+  id?: string;
+  orderId: string;
   productId: number;
   productName?: string;
   productDescription?: string;
@@ -11,8 +11,8 @@ export type ItemParams = {
 };
 
 export default class Item {
-  private id!: number | undefined;
-  private orderId!: number;
+  private id!: string | undefined;
+  private orderId!: string;
   private productId!: number;
   private productName!: string | undefined;
   private productDescription!: string | undefined;

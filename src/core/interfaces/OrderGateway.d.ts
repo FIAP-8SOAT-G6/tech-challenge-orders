@@ -5,12 +5,12 @@ export default interface OrderGateway {
   createOrder(orderDTO: OrderDTO): Promise<OrderDTO>;
 
   getOrdersByStatusAndSortByAscDate(status: string): Promise<OrderDTO[]>;
-  getOrder(orderId: number): Promise<OrderDTO | undefined>;
+  getOrder(orderId: string): Promise<OrderDTO | undefined>;
   getOrdersAll(): Promise<OrderDTO[]>;
 
   updateOrder(orderDTO: OrderDTO): Promise<OrderDTO>;
 
   addItem(orderDTO: OrderDTO, itemDTO: ItemDTO);
-  updateItem(itemId: number, updateItemDTO: ItemDTO);
-  deleteItem(orderId: number, itemId: number);
+  updateItem(itemId: string, updateItemDTO: ItemDTO);
+  deleteItem(orderId: string, itemId: string);
 }

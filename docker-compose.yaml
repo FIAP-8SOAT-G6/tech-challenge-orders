@@ -42,17 +42,17 @@ services:
 
   orders-db:
     env_file: .env
-    image: postgres:latest
-    container_name: orders-postgres
+    image: mongo:latest
+    container_name: orders-mongo
     restart: always
     ports:
       - "${ORDERS_PORT_DB}:${ORDERS_PORT_DB}"
     environment:
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${ORDERS_DB_NAME}
+      MONGO_INITDB_ROOT_USERNAME: ${DATABASE_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+      MONGO_INITDB_DATABASE: ${ORDERS_DB_NAME}
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - db_data:/data/db
     networks:
       - fiap
     expose:
@@ -70,10 +70,9 @@ services:
       PORT_SERVER: ${ORDERS_CONTAINER_PORT_SERVER}
       DATABASE_PORT: ${ORDERS_PORT_DB}
       DATABASE_NAME: ${ORDERS_DB_NAME}
-      DATABASE_HOST: ${ORDERS_POSTGRES_HOST}
+      DATABASE_HOST: ${ORDERS_DB_HOST}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
-      DATABASE_DIALECT: ${DATABASE_DIALECT}
 
       PRODUCTS_SERVICE_HOST: lanchonete-node
       PRODUCTS_SERVICE_PORT: ${LANCHONETE_CONTAINER_PORT_SERVER}
@@ -87,14 +86,11 @@ services:
       - fiap
     expose:
       - ${ORDERS_CONTAINER_PORT_SERVER}
-    volumes:
-      - node_data:/home/node/app
 
 volumes:
   lanchonete_db_data:
   lanchonete_node_data:
   db_data:
-  node_data:
 
 networks:
   fiap:

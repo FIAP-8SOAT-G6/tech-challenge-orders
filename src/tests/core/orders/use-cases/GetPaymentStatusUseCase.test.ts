@@ -6,7 +6,6 @@ import OrderDTO from "../../../../core/orders/dto/OrderDTO";
 
 import { OrderPaymentsStatus } from "../../../../core/orders/entities/OrderPaymentsStatus";
 
-import CustomerGateway from "../../../../core/interfaces/CustomerGateway";
 import OrderGateway from "../../../../core/interfaces/OrderGateway";
 import FakeCustomerGateway from "../../../../gateways/FakeCustomerGateway";
 import FakeOrderGateway from "../../../../gateways/FakeOrderGateway";
@@ -61,7 +60,7 @@ describe("Get Payment Status Use Case", () => {
 
   it("should throw error message when order non-existing", async () => {
     const getPaymentStatus = setupGetPaymentStatusUseCase();
-    const nonExistingId = -1;
+    const nonExistingId = "-1";
 
     await expect(
       getPaymentStatus.getPaymentStatus(nonExistingId)

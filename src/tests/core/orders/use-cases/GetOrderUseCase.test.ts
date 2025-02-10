@@ -61,7 +61,7 @@ context("Order Use Case", () => {
     });
 
     it("should throw error when order does not exist", async () => {
-      const unexistingOrderId = -1;
+      const unexistingOrderId = "-1";
       const getOrderUseCase = setupGetOrderUseCase();
       await expect(
         getOrderUseCase.getOrder(unexistingOrderId)

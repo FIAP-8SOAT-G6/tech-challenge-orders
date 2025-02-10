@@ -1,7 +1,7 @@
 import OrderDTO from "../core/orders/dto/OrderDTO";
 
 export type OrderResponse = {
-  id: number;
+  id: string;
   createdAt: Date;
   code: string;
   customerId: number;
@@ -9,8 +9,8 @@ export type OrderResponse = {
   paymentStatus: string;
   totalPrice: number;
   items: {
-    id: number;
-    orderId: number;
+    id: string;
+    orderId: string;
     productId: number;
     productName: string;
     productDescription: string;

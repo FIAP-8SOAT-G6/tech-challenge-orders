@@ -8,8 +8,8 @@ import OrderDTO from "../../../core/orders/dto/OrderDTO";
 import { OrderPaymentsStatus } from "../../../core/orders/entities/OrderPaymentsStatus";
 import { OrderStatus } from "../../../core/orders/entities/OrderStatus";
 import { MercadoPagoPaymentSystem } from "../../../external/MercadoPagoPaymentSystem";
-import SequelizeOrderDataSource from "../../../external/SequelizeOrderDataSource";
 import app from "../../../server";
+import MongoOrderDataSource from "../../../external/MongoOrderDataSource";
 
 chai.use(chaiAsPromised);
 
@@ -19,9 +19,9 @@ describe("WebhooksAPI", () => {
   let getPaymentDetailsStub: sinon.SinonStub;
 
   beforeEach(() => {
-    findByIdStub = sinon.stub(SequelizeOrderDataSource.prototype, "findById");
+    findByIdStub = sinon.stub(MongoOrderDataSource.prototype, "findById");
     updateOrderStub = sinon.stub(
-      SequelizeOrderDataSource.prototype,
+      MongoOrderDataSource.prototype,
       "updateOrder"
     );
     getPaymentDetailsStub = sinon.stub(
@@ -32,14 +32,14 @@ describe("WebhooksAPI", () => {
 
   function createOrderDTO(customProps: {} = {}) {
     const newOrder = {
-      id: 1,
+      id: "1",
       code: "1",
       customerId: 1,
       status: "CREATED",
       totalPrice: 0,
       items: [
         new ItemDTO({
-          id: 1,
+          id: "1",
           quantity: 2,
           totalPrice: 10,
           unitPrice: 5,
@@ -55,7 +55,7 @@ describe("WebhooksAPI", () => {
     customItems,
   }: { customOrder?: Partial<OrderDTO>; customItems?: Partial<ItemDTO> } = {}) {
     const itemDTO = new ItemDTO({
-      id: 1,
+      id: "1",
       quantity: 2,
       totalPrice: 10,
       unitPrice: 5,
@@ -73,7 +73,7 @@ describe("WebhooksAPI", () => {
   }
 
   function resolveGetPaymentDetails(paymentDetails: {
-    orderId: number;
+    orderId: string;
     paymentStatus: OrderPaymentsStatus;
     paymentId: number;
   }) {
@@ -99,7 +99,7 @@ describe("WebhooksAPI", () => {
       resolveGetPaymentDetails({
         paymentId: PAYMENT_ID,
         paymentStatus: OrderPaymentsStatus.APPROVED,
-        orderId: 1,
+        orderId: "1",
       });
 
       const res = await request(app)
@@ -125,7 +125,7 @@ describe("WebhooksAPI", () => {
       resolveGetPaymentDetails({
         paymentId: PAYMENT_ID,
         paymentStatus: OrderPaymentsStatus.PENDING,
-        orderId: 1,
+        orderId: "1",
       });
 
       const res = await request(app)

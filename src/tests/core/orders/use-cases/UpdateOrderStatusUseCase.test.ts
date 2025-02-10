@@ -76,7 +76,7 @@ describe("Update Order Status", () => {
     return new ProcessOrderPaymentUseCase(orderGateway, paymentGateway);
   }
 
-  async function addItemToOrder(orderId: number) {
+  async function addItemToOrder(orderId: string) {
     const addItemUseCase = setupAddItemUseCase();
 
     const product = await productGateway.createProduct(PRODUCT_DTO);
@@ -111,12 +111,12 @@ describe("Update Order Status", () => {
     await checkoutUseCase.checkout(order.id!);
 
     paymentGateway.createPaymentDetails({
-      paymentId: order.id!,
+      paymentId: Number(order.id!),
       orderId: order.id!,
       paymentStatus: OrderPaymentsStatus.APPROVED,
     });
     await processOrderPaymentUseCase.updateOrderPaymentStatus({
-      paymentId: order.id!,
+      paymentId: Number(order.id!),
     });
     await updateOrderStatusUseCase.updateOrderStatus(order.id!, RECEIVED);
 
@@ -128,7 +128,7 @@ describe("Update Order Status", () => {
     const updateOrderStatusUseCase = setupUpdateOrderStatusUseCase();
 
     const { RECEIVED } = OrderStatus;
-    const nonExistingOrderId = -1;
+    const nonExistingOrderId = "-1";
     await expect(
       updateOrderStatusUseCase.updateOrderStatus(nonExistingOrderId, RECEIVED)
     ).to.be.eventually.rejectedWith(ResourceNotFoundError);

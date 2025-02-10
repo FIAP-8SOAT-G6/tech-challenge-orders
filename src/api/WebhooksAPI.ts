@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 import WebhookController from "../controllers/WebhookController";
-import SequelizeOrderDataSource from "../external/SequelizeOrderDataSource";
 import PaymentDTO from "../core/orders/dto/PaymentDTO";
 import ResourceNotFoundError from "../core/common/exceptions/ResourceNotFoundError";
 import { MercadoPagoPaymentSystem } from "../external/MercadoPagoPaymentSystem";
+import MongoOrderDataSource from "../external/MongoOrderDataSource";
 
 const webhooksAPIRouter = Router();
 
@@ -22,7 +22,7 @@ webhooksAPIRouter.post(WEBHOOK_PATH, async (req, res) => {
       const paymentDTO = new PaymentDTO({
         paymentId: Number(id)
       });
-      await WebhookController.processPayment(new SequelizeOrderDataSource(), new MercadoPagoPaymentSystem(), paymentDTO);
+      await WebhookController.processPayment(new MongoOrderDataSource(), new MercadoPagoPaymentSystem(), paymentDTO);
 
       return res.status(200).json({});
     }

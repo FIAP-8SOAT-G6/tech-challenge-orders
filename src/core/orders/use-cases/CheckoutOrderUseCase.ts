@@ -11,7 +11,7 @@ export default class CheckoutOrderUseCase implements CheckoutOrder {
     private paymentGateway: PaymentGateway
   ) {}
 
-  async checkout(orderId: number): Promise<string> {
+  async checkout(orderId: string): Promise<string> {
     const orderDTO = await this.orderGateway.getOrder(orderId);
     this.#validateOrderExists(orderDTO?.id!, orderId);
     const order = OrderMapper.toOrderEntity(orderDTO!);
@@ -24,7 +24,7 @@ export default class CheckoutOrderUseCase implements CheckoutOrder {
     return qrCode;
   }
 
-  #validateOrderExists(orderIdFound: number, orderIdReceived: number) {
+  #validateOrderExists(orderIdFound: string, orderIdReceived: string) {
     if (!orderIdFound) throw new ResourceNotFoundError(ResourceNotFoundError.Resources.Order, "id", orderIdReceived);
   }
 }

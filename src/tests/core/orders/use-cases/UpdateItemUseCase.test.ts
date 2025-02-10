@@ -99,8 +99,8 @@ describe("Update item", () => {
     const updateItemUseCase = setupUpdateItemUseCase();
 
     const product = await createProduct();
-    const unexistingOrderId = -1;
-    const itemId = 1;
+    const unexistingOrderId = "-1";
+    const itemId = "1";
     const updateItemDTO = new ItemDTO({
       productId: product.id,
       quantity: 2,
@@ -116,7 +116,7 @@ describe("Update item", () => {
 
     const orderDTO = await createOrderDTO();
     const order = await createOrderUseCase.createOrder(orderDTO);
-    const unexistingItemId = -1;
+    const unexistingItemId = "-1";
     const updateItemDTO = new ItemDTO({ quantity: 3 });
     await expect(
       updateItemUseCase.updateItem(order.id!, unexistingItemId, updateItemDTO)

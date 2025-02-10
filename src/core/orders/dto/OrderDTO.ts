@@ -1,7 +1,7 @@
 import ItemDTO from "./ItemDTO";
 
 export default class OrderDTO {
-  public id?: number;
+  public id?: string;
   public createdAt?: Date;
   public code?: string;
   public status?: string;
@@ -21,7 +21,7 @@ export default class OrderDTO {
     elapsedTime,
     paymentStatus
   }: {
-    id?: number;
+    id?: string;
     createdAt?: Date;
     code?: string;
     status?: string;

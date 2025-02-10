@@ -2,7 +2,10 @@ import Item from "./Item";
 import ItemDTO from "../dto/ItemDTO";
 
 import { OrderStatus, isValidOrderStatus } from "./OrderStatus";
-import { OrderPaymentsStatus, isValidOrderPaymentStatus } from "./OrderPaymentsStatus";
+import {
+  OrderPaymentsStatus,
+  isValidOrderPaymentStatus,
+} from "./OrderPaymentsStatus";
 
 import EmptyOrderError from "../exceptions/EmptyOrderError";
 import InvalidStatusTransitionError from "../exceptions/InvalidStatusTransitionError";
@@ -20,7 +23,7 @@ const ALLOWED_TARGET_STATUS_TRANSITIONS: {
   [OrderStatus.RECEIVED]: [OrderStatus.PAYED],
   [OrderStatus.PREPARING]: [OrderStatus.RECEIVED],
   [OrderStatus.DONE]: [OrderStatus.PREPARING],
-  [OrderStatus.FINISHED]: [OrderStatus.DONE]
+  [OrderStatus.FINISHED]: [OrderStatus.DONE],
 };
 
 const statusTransitionValidator = {
@@ -38,11 +41,11 @@ const statusTransitionValidator = {
   [OrderStatus.RECEIVED]: function (order: Order) {},
   [OrderStatus.PREPARING]: function (order: Order) {},
   [OrderStatus.DONE]: function (order: Order) {},
-  [OrderStatus.FINISHED]: function (order: Order) {}
+  [OrderStatus.FINISHED]: function (order: Order) {},
 };
 
 type OrderParams = {
-  id?: number;
+  id?: string;
   createdAt?: Date;
   code: string;
   status: string;
@@ -53,7 +56,7 @@ type OrderParams = {
 };
 
 export default class Order {
-  private id!: number | undefined;
+  private id!: string | undefined;
   private createdAt!: Date | undefined;
   private code!: string;
   private status!: OrderStatus;
@@ -62,7 +65,15 @@ export default class Order {
   private customerId!: number;
   private paymentStatus!: OrderPaymentsStatus;
 
-  constructor({ id, createdAt, code, status, customerId, items = [], paymentStatus = OrderPaymentsStatus.PENDING }: OrderParams) {
+  constructor({
+    id,
+    createdAt,
+    code,
+    status,
+    customerId,
+    items = [],
+    paymentStatus = OrderPaymentsStatus.PENDING,
+  }: OrderParams) {
     this.id = id;
     this.createdAt = createdAt;
     this.code = code;
@@ -114,7 +125,10 @@ export default class Order {
 
     const requiredStatusForTarget = ALLOWED_TARGET_STATUS_TRANSITIONS[status];
 
-    if (this.getStatus() === OrderStatus.FINISHED && status !== OrderStatus.FINISHED) {
+    if (
+      this.getStatus() === OrderStatus.FINISHED &&
+      status !== OrderStatus.FINISHED
+    ) {
       throw new OrderFinishedError();
     }
 
@@ -123,7 +137,11 @@ export default class Order {
       transitionValidator(this);
       this.status = status;
     } else {
-      throw new InvalidStatusTransitionError(this.status as string, status, ALLOWED_TARGET_STATUS_TRANSITIONS[status]);
+      throw new InvalidStatusTransitionError(
+        this.status as string,
+        status,
+        ALLOWED_TARGET_STATUS_TRANSITIONS[status]
+      );
     }
   }
 
@@ -140,9 +158,9 @@ export default class Order {
     unitPrice,
     totalPrice,
     productName,
-    productDescription
+    productDescription,
   }: {
-    id?: number;
+    id?: string;
     productId: number;
     quantity: number;
     unitPrice: number;
@@ -150,7 +168,8 @@ export default class Order {
     productName?: string;
     productDescription?: string;
   }) {
-    if (this.getStatus() !== OrderStatus.CREATED) throw new ClosedOrderError(this.getId(), this.getStatus());
+    if (this.getStatus() !== OrderStatus.CREATED)
+      throw new ClosedOrderError(this.getId(), this.getStatus());
 
     const item = new Item({
       id,
@@ -159,7 +178,7 @@ export default class Order {
       quantity,
       unitPrice,
       productName,
-      productDescription
+      productDescription,
     });
     this.items.push(item);
     this.#calculateTotalPrice();
@@ -172,12 +191,18 @@ export default class Order {
     return Date.now() - this.createdAt.getTime();
   }
 
-  updateItem(itemId: number, updatedValues: { quantity: number }) {
-    if (this.getStatus() !== OrderStatus.CREATED) throw new ClosedOrderError(this.getId(), this.getStatus());
+  updateItem(itemId: string, updatedValues: { quantity: number }) {
+    if (this.getStatus() !== OrderStatus.CREATED)
+      throw new ClosedOrderError(this.getId(), this.getStatus());
 
     const item = this.items.find((item) => item.getId() === itemId);
 
-    if (!item) throw new ResourceNotFoundError(ResourceNotFoundError.Resources.Item, "id", itemId);
+    if (!item)
+      throw new ResourceNotFoundError(
+        ResourceNotFoundError.Resources.Item,
+        "id",
+        itemId
+      );
 
     const { quantity } = updatedValues;
     item.setQuantity(quantity);
@@ -186,11 +211,17 @@ export default class Order {
     return item;
   }
 
-  removeItem(itemId: number) {
-    if (this.getStatus() !== OrderStatus.CREATED) throw new ClosedOrderError(this.getId(), this.getStatus());
+  removeItem(itemId: string) {
+    if (this.getStatus() !== OrderStatus.CREATED)
+      throw new ClosedOrderError(this.getId(), this.getStatus());
 
     const itemIndex = this.items.findIndex((item) => item.getId() === itemId);
-    if (itemIndex < 0) throw new ResourceNotFoundError(ResourceNotFoundError.Resources.Item, "id", itemId);
+    if (itemIndex < 0)
+      throw new ResourceNotFoundError(
+        ResourceNotFoundError.Resources.Item,
+        "id",
+        itemId
+      );
 
     this.items.splice(itemIndex, 1);
   }
@@ -201,7 +232,14 @@ export default class Order {
   }
 
   #insertIntoItems(itemDTO: ItemDTO) {
-    const { id, productId, quantity, unitPrice, productName, productDescription } = itemDTO;
+    const {
+      id,
+      productId,
+      quantity,
+      unitPrice,
+      productName,
+      productDescription,
+    } = itemDTO;
     const item = new Item({
       id,
       productId: productId!,
@@ -209,12 +247,16 @@ export default class Order {
       quantity: quantity!,
       unitPrice: unitPrice!,
       productName,
-      productDescription
+      productDescription,
     });
     this.items.push(item);
   }
 
   #calculateTotalPrice() {
-    this.totalPrice = Number(this.items.reduce((currentSum, item) => currentSum + item.getTotalPrice(), 0).toFixed(2));
+    this.totalPrice = Number(
+      this.items
+        .reduce((currentSum, item) => currentSum + item.getTotalPrice(), 0)
+        .toFixed(2)
+    );
   }
 }

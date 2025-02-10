@@ -3,7 +3,7 @@ import ItemDTO from "../core/orders/dto/ItemDTO";
 import OrderDTO from "../core/orders/dto/OrderDTO";
 
 type FakeOrder = {
-  id: number;
+  id: string;
   status?: string;
   paymentStatus?: string;
   code?: string;
@@ -13,8 +13,8 @@ type FakeOrder = {
 };
 
 type FakeItem = {
-  id?: number;
-  OrderId?: number;
+  id?: string;
+  OrderId?: string;
   productId?: number;
   quantity?: number;
   unitPrice?: number;
@@ -30,7 +30,7 @@ export default class FakeOrderGateway implements OrderGateway {
   async createOrder(orderDTO: OrderDTO): Promise<OrderDTO> {
     const { status, paymentStatus, code, customerId } = orderDTO;
     const order = {
-      id: this.orders.length + 1,
+      id: String(this.orders.length + 1),
       status,
       paymentStatus,
       code,
@@ -56,7 +56,7 @@ export default class FakeOrderGateway implements OrderGateway {
     return orders.length === 0 ? [] : orders.map(this.#createOrderDTO);
   }
 
-  async getOrder(id: number): Promise<OrderDTO | undefined> {
+  async getOrder(id: string): Promise<OrderDTO | undefined> {
     const order = this.orders.find((order) => order.id === id);
     if (!order) return undefined;
     order.items = this.items.filter((item) => item.OrderId === order.id);
@@ -93,7 +93,7 @@ export default class FakeOrderGateway implements OrderGateway {
     } = itemDTO;
 
     this.items.push({
-      id: this.items.length + 1,
+      id: String(this.items.length + 1),
       OrderId,
       productId,
       productName,
@@ -108,7 +108,7 @@ export default class FakeOrderGateway implements OrderGateway {
     return this.#createOrderDTO(order);
   }
 
-  async updateItem(itemId: number, itemDTO: ItemDTO): Promise<OrderDTO> {
+  async updateItem(itemId: string, itemDTO: ItemDTO): Promise<OrderDTO> {
     const itemIndex = this.items.findIndex((item) => item.id === itemId);
     this.items[itemIndex] = {
       ...this.items[itemIndex],
@@ -119,7 +119,7 @@ export default class FakeOrderGateway implements OrderGateway {
     return Promise.resolve(this.#createOrderDTO(order));
   }
 
-  async deleteItem(orderId: number, itemId: number) {
+  async deleteItem(orderId: string, itemId: string) {
     const itemIndex = this.items.findIndex(
       (item) => item.OrderId === orderId && item.id === itemId
     );

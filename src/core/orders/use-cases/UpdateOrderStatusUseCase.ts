@@ -7,7 +7,7 @@ import OrderMapper from "../mappers/OrderMappers";
 export default class UpdateOrderStatusUseCase implements UpdateOrderStatus {
   constructor(private orderGateway: OrderGateway) {}
 
-  async updateOrderStatus(orderId: number, status: string): Promise<OrderDTO> {
+  async updateOrderStatus(orderId: string, status: string): Promise<OrderDTO> {
     const orderDTO = await this.orderGateway.getOrder(orderId!);
     this.#validateOrderExists(orderDTO?.id!, orderId!);
 
@@ -16,7 +16,7 @@ export default class UpdateOrderStatusUseCase implements UpdateOrderStatus {
     return await this.orderGateway.updateOrder(OrderMapper.toOrderDTO(order));
   }
 
-  #validateOrderExists(orderIdFound: number, orderIdReceived: number) {
+  #validateOrderExists(orderIdFound: string, orderIdReceived: string) {
     if (!orderIdFound) throw new ResourceNotFoundError(ResourceNotFoundError.Resources.Order, "id", orderIdReceived);
   }
 }

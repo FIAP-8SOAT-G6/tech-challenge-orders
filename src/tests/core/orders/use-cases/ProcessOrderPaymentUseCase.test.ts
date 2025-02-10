@@ -5,26 +5,24 @@ import { OrderPaymentsStatus } from "../../../../core/orders/entities/OrderPayme
 import { OrderStatus } from "../../../../core/orders/entities/OrderStatus";
 
 import CustomerDTO from "../../../../core/customers/dto/CustomerDTO";
-import OrderDTO from "../../../../core/orders/dto/OrderDTO";
 import ItemDTO from "../../../../core/orders/dto/ItemDTO";
-import ProductDTO from "../../../../core/products/dto/ProductDTO";
+import OrderDTO from "../../../../core/orders/dto/OrderDTO";
 import PaymentDTO from "../../../../core/orders/dto/PaymentDTO";
+import ProductDTO from "../../../../core/products/dto/ProductDTO";
 
-import CustomerGateway from "../../../../core/interfaces/CustomerGateway";
 import OrderGateway from "../../../../core/interfaces/OrderGateway";
 import FakeCustomerGateway from "../../../../gateways/FakeCustomerGateway";
 import FakeOrderGateway from "../../../../gateways/FakeOrderGateway";
-import MockPaymentGateway from "../../../../gateways/MockPaymentGateway";
 import FakeProductGateway from "../../../../gateways/FakeProductGateway";
-import ProductGateway from "../../../../core/interfaces/ProductGateway";
+import MockPaymentGateway from "../../../../gateways/MockPaymentGateway";
 
 import ResourceNotFoundError from "../../../../core/common/exceptions/ResourceNotFoundError";
 
-import CreateOrderUseCase from "../../../../core/orders/use-cases/CreateOrderUseCase";
-import ProcessOrderPaymentUseCase from "../../../../core/orders/use-cases/ProcessOrderPaymentUseCase";
 import AddItemUseCase from "../../../../core/orders/use-cases/AddItemUseCase";
 import CheckoutOrderUseCase from "../../../../core/orders/use-cases/CheckoutOrderUseCase";
+import CreateOrderUseCase from "../../../../core/orders/use-cases/CreateOrderUseCase";
 import GetOrderUseCase from "../../../../core/orders/use-cases/GetOrderUseCase";
+import ProcessOrderPaymentUseCase from "../../../../core/orders/use-cases/ProcessOrderPaymentUseCase";
 
 chai.use(chaiAsPromised);
 
@@ -87,7 +85,7 @@ describe("Process Order Payment Use Case", () => {
     return new AddItemUseCase(orderGateway, productGateway);
   }
 
-  async function addItemToOrder(orderId: number) {
+  async function addItemToOrder(orderId: string) {
     const addItemUseCase = setupAddItemUseCase();
 
     const product = await createProduct();
@@ -111,12 +109,12 @@ describe("Process Order Payment Use Case", () => {
     await checkoutUseCase.checkout(order.id!);
 
     paymentGateway.createPaymentDetails({
-      paymentId: order.id!,
+      paymentId: Number(order.id!),
       orderId: order.id!,
       paymentStatus: OrderPaymentsStatus.APPROVED,
     });
     await processOrderPaymentUseCase.updateOrderPaymentStatus({
-      paymentId: order.id!,
+      paymentId: Number(order.id!),
     });
 
     const orderUpdated = await getOrderUseCase.getOrder(order.id!);
@@ -142,7 +140,7 @@ describe("Process Order Payment Use Case", () => {
 
   it("should throw error message when order id non-existing", async () => {
     const processOrderPayment = setupProcessOrderPaymentUseCase();
-    const nonExistingId = -1;
+    const nonExistingId = "-1";
     const paymentDTO = new PaymentDTO({
       paymentId: 1,
       orderId: nonExistingId,

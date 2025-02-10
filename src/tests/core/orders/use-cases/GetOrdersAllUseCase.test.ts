@@ -66,7 +66,7 @@ context("Get All Orders Use Case", () => {
     return new AddItemUseCase(orderGateway, productGateway);
   }
 
-  async function addItemToOrder(orderId: number) {
+  async function addItemToOrder(orderId: string) {
     const addItemUseCase = setupAddItemUseCase();
 
     const product = await createProduct()

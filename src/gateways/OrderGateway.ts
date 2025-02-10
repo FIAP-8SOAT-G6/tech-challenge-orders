@@ -11,7 +11,7 @@ export default class OrderGateway implements OrderGatewayInterface {
     return createdOrder;
   }
 
-  async getOrder(orderId: number): Promise<OrderDTO | undefined> {
+  async getOrder(orderId: string): Promise<OrderDTO | undefined> {
     const order = await this.dataSource.findById(orderId);
     if (!order) return undefined;
     return order;
@@ -36,7 +36,7 @@ export default class OrderGateway implements OrderGatewayInterface {
     return updatedOrder;
   }
 
-  async checkout(orderId: number): Promise<OrderDTO> {
+  async checkout(orderId: string): Promise<OrderDTO> {
     const order = await this.dataSource.findById(orderId);
     const updatedOrder = await this.dataSource.updateOrder(order);
     return updatedOrder;
@@ -46,11 +46,11 @@ export default class OrderGateway implements OrderGatewayInterface {
     await this.dataSource.createItem(orderDTO, itemDTO);
   }
 
-  async updateItem(itemId: number, updateItemDTO: ItemDTO) {
+  async updateItem(itemId: string, updateItemDTO: ItemDTO) {
     await this.dataSource.updateItem(itemId, updateItemDTO);
   }
 
-  async deleteItem(orderId: number, itemId: number) {
+  async deleteItem(orderId: string, itemId: string) {
     await this.dataSource.removeItem(orderId, itemId);
     return;
   }

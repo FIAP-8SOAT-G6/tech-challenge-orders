@@ -26,7 +26,7 @@ export default class OrderController {
 
   public static async getOrder(
     orderDataSource: OrderDataSource,
-    orderId: number
+    orderId: string
   ): Promise<OrderResponse> {
     const useCase = OrdersFactory.makeGetOrder(orderDataSource);
     const order = await useCase.getOrder(orderId);
@@ -51,7 +51,7 @@ export default class OrderController {
 
   public static async getPaymentStatus(
     orderDataSource: OrderDataSource,
-    orderId: number
+    orderId: string
   ): Promise<string> {
     const useCase = OrdersFactory.makeGetPaymentStatus(orderDataSource);
     const paymentStatus = await useCase.getPaymentStatus(orderId);
@@ -61,7 +61,7 @@ export default class OrderController {
   public static async checkout(
     orderDataSource: OrderDataSource,
     paymentSystem: PaymentSystem,
-    orderId: number
+    orderId: string
   ): Promise<QRCodeResponse> {
     const useCase = OrdersFactory.makeCheckout(orderDataSource, paymentSystem);
     const orderPaymentQRCode = await useCase.checkout(orderId);
@@ -70,7 +70,7 @@ export default class OrderController {
 
   public static async updateOrderStatus(
     orderDataSource: OrderDataSource,
-    orderId: number,
+    orderId: string,
     status: string
   ): Promise<OrderResponse> {
     const useCase = OrdersFactory.makeUpdateOrderStatus(orderDataSource);
@@ -81,7 +81,7 @@ export default class OrderController {
   public static async addItem(
     orderDataSource: OrderDataSource,
     productDataSource: ProductsSource,
-    orderId: number,
+    orderId: string,
     addItemDTO: ItemDTO
   ): Promise<OrderResponse> {
     const useCase = OrdersFactory.makeAddItem(
@@ -94,8 +94,8 @@ export default class OrderController {
 
   public static async updateItem(
     orderDataSource: OrderDataSource,
-    orderId: number,
-    itemId: number,
+    orderId: string,
+    itemId: string,
     updateItemDTO: ItemDTO
   ): Promise<OrderResponse> {
     const useCase = OrdersFactory.makeUpdateItem(orderDataSource);
@@ -105,8 +105,8 @@ export default class OrderController {
 
   public static async deleteItem(
     orderDataSource: OrderDataSource,
-    orderId: number,
-    itemId: number
+    orderId: string,
+    itemId: string
   ): Promise<any> {
     const useCase = OrdersFactory.makeDeleteItem(orderDataSource);
     await useCase.deleteItem(orderId, itemId);

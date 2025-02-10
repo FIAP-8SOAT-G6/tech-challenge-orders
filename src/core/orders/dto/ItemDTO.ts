@@ -1,6 +1,6 @@
 export default class ItemDTO {
-  public id?: number;
-  public orderId?: number;
+  public id?: string;
+  public orderId?: string;
   public productId?: number;
   public productName?: string;
   public productDescription?: string;
@@ -18,8 +18,8 @@ export default class ItemDTO {
     unitPrice,
     totalPrice
   }: {
-    id?: number;
-    orderId?: number;
+    id?: string;
+    orderId?: string;
     productId?: number;
     productName?: string;
     productDescription?: string;

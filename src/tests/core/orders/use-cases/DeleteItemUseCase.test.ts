@@ -94,8 +94,8 @@ describe("Delete Item", () => {
   it("should return an error when the order does not exist", async () => {
     const deleteItemUseCase = setupDeleteItemUseCase();
 
-    const unexistingOrderId = -1;
-    const unexistingItemId = -1;
+    const unexistingOrderId = "-1";
+    const unexistingItemId = "-1";
     await expect(
       deleteItemUseCase.deleteItem(unexistingOrderId, unexistingItemId)
     ).to.be.eventually.rejectedWith(ResourceNotFoundError);

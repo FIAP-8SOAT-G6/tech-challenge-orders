@@ -3,7 +3,7 @@ import chaiAsPromised from "chai-as-promised";
 import request from "supertest";
 import sinon from "sinon";
 import app from "../../../server";
-import SequelizeOrderDataSource from "../../../external/SequelizeOrderDataSource";
+import MongoOrderDataSource from "../../../external/MongoOrderDataSource";
 import OrderDTO from "../../../core/orders/dto/OrderDTO";
 import CustomerDTO from "../../../core/customers/dto/CustomerDTO";
 import OrderPresenter from "../../../presenters/OrderPresenters";
@@ -41,31 +41,31 @@ describe("OrdersAPI", () => {
       "sendPaymentRequest"
     );
 
-    createStub = sinon.stub(SequelizeOrderDataSource.prototype, "create");
-    findByIdStub = sinon.stub(SequelizeOrderDataSource.prototype, "findById");
-    findAllStub = sinon.stub(SequelizeOrderDataSource.prototype, "findAll");
+    createStub = sinon.stub(MongoOrderDataSource.prototype, "create");
+    findByIdStub = sinon.stub(MongoOrderDataSource.prototype, "findById");
+    findAllStub = sinon.stub(MongoOrderDataSource.prototype, "findAll");
     findOrdersByStatusAndSortByAscDateStub = sinon.stub(
-      SequelizeOrderDataSource.prototype,
+      MongoOrderDataSource.prototype,
       "findOrdersByStatusAndSortByAscDate"
     );
     //findOrdersByStatusAndSortByAscDate.resolves([]); -- recebe uma string.
     updateOrderStub = sinon.stub(
-      SequelizeOrderDataSource.prototype,
+      MongoOrderDataSource.prototype,
       "updateOrder"
     );
     //updateOrderStub.resolves(orderDTO) --recebe um orderDTO - usa o findById para retorno
     createItemStub = sinon.stub(
-      SequelizeOrderDataSource.prototype,
+      MongoOrderDataSource.prototype,
       "createItem"
     );
     //createItemStub.resolves(order) --recebe um orderDTO e um itemDTO
     updateItemStub = sinon.stub(
-      SequelizeOrderDataSource.prototype,
+      MongoOrderDataSource.prototype,
       "updateItem"
     );
     //updateItemStub.resolves(nada) -- usa o findByPK - recebe um itemId e o itemDTO com as alterações
     removeItemStub = sinon.stub(
-      SequelizeOrderDataSource.prototype,
+      MongoOrderDataSource.prototype,
       "removeItem"
     );
   });
@@ -83,7 +83,7 @@ describe("OrdersAPI", () => {
 
   function createOrderDTO(customProps: {} = {}) {
     const newOrder = {
-      id: 1,
+      id: "1",
       code: "1",
       customerId: 1,
       status: "CREATED",
@@ -121,14 +121,14 @@ describe("OrdersAPI", () => {
     customItems,
   }: { customOrder?: Partial<OrderDTO>; customItems?: Partial<ItemDTO> } = {}) {
     const itemDTO = new ItemDTO({
-      id: 1,
+      id: "1",
       quantity: 2,
       totalPrice: 10,
       unitPrice: 5,
       ...customItems,
     });
     const orderDTO = createOrderDTO({
-      id: 1,
+      id: "1",
       code: "1",
       createdAt: new Date(),
       items: [itemDTO],
@@ -152,7 +152,7 @@ describe("OrdersAPI", () => {
       });
       const orderCreated = {
         ...newOrderDTO,
-        id: 1,
+        id: "1",
         createdAt: new Date(),
         totalPrice: 0,
         items: [],
@@ -176,7 +176,7 @@ describe("OrdersAPI", () => {
       const newOrderDTO = new OrderDTO(newOrder);
       const orderCreated = {
         ...newOrderDTO,
-        id: 1,
+        id: "1",
         createdAt: new Date(),
         totalPrice: 0,
         paymentStatus: "PENDING",
@@ -206,11 +206,11 @@ describe("OrdersAPI", () => {
     it("should return orders list", async () => {
       findOrdersByStatusAndSortByAscDateStub
         .withArgs("DONE")
-        .resolves([createOrderDTO({ id: 1, status: "DONE" })]);
+        .resolves([createOrderDTO({ id: "1", status: "DONE" })]);
       findOrdersByStatusAndSortByAscDateStub.withArgs("PREPARING").resolves([]);
       findOrdersByStatusAndSortByAscDateStub
         .withArgs("RECEIVED")
-        .resolves([createOrderDTO({ id: 2, status: "RECEIVED" })]);
+        .resolves([createOrderDTO({ id: "2", status: "RECEIVED" })]);
 
       const res = await request(app).get("/orders");
 
@@ -231,13 +231,13 @@ describe("OrdersAPI", () => {
   describe("when search all orders", () => {
     it("should return search all orders", async () => {
       const firstCreatedOrderDTO = createOrderDTO({
-        id: 1,
+        id: "1",
         code: "1",
         paymentStatus: "PENDING",
         createdAt: new Date(),
       });
       const secondCreatedOrderDTO = createOrderDTO({
-        id: 2,
+        id: "2",
         code: "2",
         paymentStatus: "PENDING",
         createdAt: new Date(),
@@ -292,7 +292,7 @@ describe("OrdersAPI", () => {
         createdAt: orderAdapter.createdAt.toISOString(),
       });
       expect(findByIdStub.calledOnce).to.be.true;
-      expect(findByIdStub.calledOnceWith(1)).to.be.true;
+      expect(findByIdStub.calledOnceWith("1")).to.be.true;
     });
 
     it("should return error message when order is not found", async () => {
@@ -321,7 +321,7 @@ describe("OrdersAPI", () => {
       expect(res.status).to.equal(200);
       expect(res.body).to.deep.equal("APPROVED");
       expect(findByIdStub.calledOnce).to.be.true;
-      expect(findByIdStub.calledOnceWith(1)).to.be.true;
+      expect(findByIdStub.calledOnceWith("1")).to.be.true;
     });
 
     it("should return error message when order is not found", async () => {
@@ -345,13 +345,13 @@ describe("OrdersAPI", () => {
   describe("when update status", () => {
     it("should update order status", async () => {
       const itemDTO = new ItemDTO({
-        id: 1,
+        id: "1",
         quantity: 2,
         totalPrice: 10,
         unitPrice: 5,
       });
       const orderDTO = createOrderDTO({
-        id: 1,
+        id: "1",
         code: "1",
         createdAt: new Date(),
         items: [itemDTO],
@@ -389,7 +389,7 @@ describe("OrdersAPI", () => {
     it("should return error message when an error occurs to update order status", async () => {
       const orderDTO = createOrderDTO({
         paymentStatus: "PENDING",
-        items: [{ id: 1, quantity: 2 }],
+        items: [{ id: "1", quantity: 2 }],
       });
       findByIdStub.resolves(orderDTO);
       updateOrderStub.rejects();
@@ -407,7 +407,7 @@ describe("OrdersAPI", () => {
     it("should add an item", async () => {
       const productCreated = resolvesCreateProduct();
 
-      const orderId = 1;
+      const orderId = "1";
       const orderDTO = new OrderDTO({
         id: orderId,
         code: "1",
@@ -429,8 +429,8 @@ describe("OrdersAPI", () => {
         items: [
           {
             ...item,
-            orderId: 1,
-            id: 1,
+            orderId: "1",
+            id: "1",
             productName: productCreated.name,
             productDescription: productCreated.description,
             totalPrice: 20,
@@ -495,7 +495,7 @@ describe("OrdersAPI", () => {
     it("should update an item", async () => {
       const productCreated = resolvesCreateProduct();
 
-      const orderId = 1;
+      const orderId = "1";
       const date = new Date();
       const orderDTO = new OrderDTO({
         id: orderId,
@@ -506,7 +506,7 @@ describe("OrdersAPI", () => {
         totalPrice: 20,
         items: [
           {
-            id: 1,
+            id: "1",
             productId: productCreated.id,
             quantity: 2,
             unitPrice: 10,
@@ -530,8 +530,8 @@ describe("OrdersAPI", () => {
         items: [
           {
             ...item,
-            orderId: 1,
-            id: 1,
+            orderId: "1",
+            id: "1",
             productName: productCreated.name,
             productDescription: productCreated.description,
             totalPrice: 40,
@@ -555,7 +555,7 @@ describe("OrdersAPI", () => {
         updateItemStub.calledOnceWith(
           orderId,
           sinon.match({
-            id: 1,
+            id: "1",
             orderId,
             productId: 5,
             productName: "Product",
@@ -631,7 +631,7 @@ describe("OrdersAPI", () => {
       expect(res.status).to.equal(204);
       expect(res.body).to.deep.equal({});
       expect(removeItemStub.calledOnce).to.be.true;
-      expect(removeItemStub.calledOnceWith(1, 1)).to.be.true;
+      expect(removeItemStub.calledOnceWith("1", "1")).to.be.true;
     });
 
     it("should return error message when order is closed", async () => {

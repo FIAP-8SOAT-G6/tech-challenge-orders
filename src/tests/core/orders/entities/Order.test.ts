@@ -14,7 +14,7 @@ import OrderFinishedError from "../../../../core/orders/exceptions/OrderFinished
 context("Order", () => {
   function createOrder(customOrder: {} = {}) {
     return new Order({
-      id: 1,
+      id: "1",
       code: "CODE123",
       status: "",
       customerId: 1,
@@ -24,7 +24,7 @@ context("Order", () => {
 
   function buildItem(customProps: {} = {}) {
     return {
-      id: 1,
+      id: "1",
       productId: 1,
       quantity: 1,
       unitPrice: 12.99,
@@ -37,7 +37,7 @@ context("Order", () => {
   function addItem(
     order: Order,
     item: {
-      id?: number;
+      id?: string;
       productId: number;
       quantity: number;
       unitPrice: number;
@@ -62,7 +62,7 @@ context("Order", () => {
     it("should create an order with the correct properties", function () {
       const order = createOrder();
 
-      expect(order.getId()).to.be.equals(1);
+      expect(order.getId()).to.be.equals("1");
       expect(order.getCode()).to.be.equals("CODE123");
       expect(order.getStatus()).to.be.equals(CREATED);
       expect(Number(order.getTotalPrice())).to.be.equals(0);
@@ -180,7 +180,7 @@ context("Order", () => {
     it("should add an item when order has status `CREATED`", () => {
       const order = createOrder();
       const item = {
-        id: 1,
+        id: "1",
         productId: 1,
         productName: "Hamburguer",
         productDescription: "Normal Hamburguer",
@@ -215,7 +215,7 @@ context("Order", () => {
         quantity: 2
       };
 
-      const updatedItem = order.updateItem(1, updateValues);
+      const updatedItem = order.updateItem("1", updateValues);
       expect(updatedItem.getQuantity()).to.be.equals(2);
       expect(updatedItem.getTotalPrice()).to.be.equals(updateValues.quantity * updatedItem.getUnitPrice());
       expect(Number(order.getTotalPrice())).to.be.equals(updateValues.quantity * Number(updatedItem.getUnitPrice()));
@@ -229,13 +229,13 @@ context("Order", () => {
       order.setStatus(PENDING_PAYMENT);
       order.setStatus(PAYED);
 
-      expect(() => order.updateItem(1, { quantity: 0 })).to.throw(ClosedOrderError);
+      expect(() => order.updateItem("1", { quantity: 0 })).to.throw(ClosedOrderError);
     });
 
     it("should throw an error when update a non-existent item", () => {
       const order = createOrder();
 
-      const nonExistingId = -1;
+      const nonExistingId = "-1";
       const updateValues = { quantity: 3 };
 
       expect(() => order.updateItem(nonExistingId, updateValues)).to.throw(ResourceNotFoundError);
@@ -254,7 +254,7 @@ context("Order", () => {
 
     it("should throw an error when remove a non-existent item", () => {
       const order = createOrder();
-      const nonExistingId = -1;
+      const nonExistingId = "-1";
 
       expect(() => order.removeItem(nonExistingId)).to.throw(ResourceNotFoundError);
     });
@@ -267,7 +267,7 @@ context("Order", () => {
       order.setStatus(PENDING_PAYMENT);
       order.setStatus(PAYED);
 
-      expect(() => order.removeItem(1)).to.throw(ClosedOrderError);
+      expect(() => order.removeItem("1")).to.throw(ClosedOrderError);
     });
   });
 });

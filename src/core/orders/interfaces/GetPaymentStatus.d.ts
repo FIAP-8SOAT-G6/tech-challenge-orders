@@ -1,3 +1,3 @@
 export default interface GetPaymentStatus {
-  getPaymentStatus(orderId: number): Promise<string>;
+  getPaymentStatus(orderId: string): Promise<string>;
 }

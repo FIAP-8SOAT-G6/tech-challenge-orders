@@ -69,7 +69,7 @@ describe("Checkout Order", () => {
     return productGateway.createProduct(PRODUCT_DTO);
   }
 
-  async function addItemToOrder(orderId: number) {
+  async function addItemToOrder(orderId: string) {
     const addItemUseCase = setupAddItemUseCase();
 
     const product = await createProduct();
@@ -123,7 +123,7 @@ describe("Checkout Order", () => {
 
   it("should return an error when the order does not exist", async () => {
     const checkoutUseCase = setupCheckoutUseCase();
-    const unexistingOrderId = -1;
+    const unexistingOrderId = "-1";
     await expect(
       checkoutUseCase.checkout(unexistingOrderId)
     ).to.be.eventually.rejectedWith(ResourceNotFoundError);

@@ -1,3 +1,3 @@
 export default interface DeleteItem {
-  deleteItem(orderId: number, itemId: number): Promise<undefined>;
+  deleteItem(orderId: string, itemId: string): Promise<undefined>;
 }

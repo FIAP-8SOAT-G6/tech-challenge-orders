@@ -12,7 +12,7 @@ export default class AddItemUseCase implements AddItem {
     private productGateway: ProductGateway
   ) {}
 
-  async addItem(orderId: number, itemDTO: ItemDTO): Promise<OrderDTO> {
+  async addItem(orderId: string, itemDTO: ItemDTO): Promise<OrderDTO> {
     const { productId, quantity } = itemDTO;
 
     const [productDTO, orderDTO] = await Promise.all([this.productGateway.getByProductId(productId!), this.orderGateway.getOrder(orderId)]);
@@ -37,7 +37,7 @@ export default class AddItemUseCase implements AddItem {
     return OrderMapper.toOrderDTO(updatedOrder);
   }
 
-  #validateOrderExists(orderIdFound: number, orderIdReceived: number) {
+  #validateOrderExists(orderIdFound: string, orderIdReceived: string) {
     if (!orderIdFound) throw new ResourceNotFoundError(ResourceNotFoundError.Resources.Order, "id", orderIdReceived);
   }
 }

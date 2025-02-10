@@ -6,7 +6,7 @@ import OrderMapper from "../mappers/OrderMappers";
 export default class GetPaymentStatusUseCase implements GetPaymentStatus {
   constructor(private orderGateway: OrderGateway) {}
 
-  async getPaymentStatus(orderId: number): Promise<string> {
+  async getPaymentStatus(orderId: string): Promise<string> {
     const repositoryOrderDTO = await this.orderGateway.getOrder(orderId);
     this.#validateOrderExists(repositoryOrderDTO?.id!, orderId);
 
@@ -14,7 +14,7 @@ export default class GetPaymentStatusUseCase implements GetPaymentStatus {
     return order.getPaymentStatus();
   }
 
-  #validateOrderExists(orderIdFound: number, orderIdReceived: number) {
+  #validateOrderExists(orderIdFound: string, orderIdReceived: string) {
     if (!orderIdFound) throw new ResourceNotFoundError(ResourceNotFoundError.Resources.Order, "id", orderIdReceived);
   }
 }

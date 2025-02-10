@@ -1,7 +1,7 @@
 import { Application } from "express";
 import { authenticateDependenciesAvailability } from "./external/Authenticators";
-import { sequelize } from "./infrastructure/database/models";
 import app from "./server";
+import connectToMongoDB from "./infrastructure/database/connection";
 
 const PORT_SERVER = process.env.PORT_SERVER || 3000;
 
@@ -14,8 +14,6 @@ function configureHealthRoutes(app: Application) {
 
   app.get("/health/readiness", async function (_, res) {
     try {
-      await sequelize.authenticate();
-
       if (!(await authenticateDependenciesAvailability()))
         return res.status(500).json({});
 
@@ -27,8 +25,8 @@ function configureHealthRoutes(app: Application) {
 }
 
 async function init() {
-  await sequelize.authenticate();
-  await sequelize.sync();
+  await connectToMongoDB();
+
 
   configureHealthRoutes(app);
 
