@@ -5,7 +5,7 @@ import { StatusCode } from "./StatusCode";
 
 const { PRODUCTS_SERVICE_HOST, PRODUCTS_SERVICE_PORT } = process.env;
 
-export default class ProductsService implements ProductsSource {
+export default class ProductsService implements ProductsSource {  
   static buildProductsServiceURL() {
     return `http://${PRODUCTS_SERVICE_HOST}:${PRODUCTS_SERVICE_PORT}`;
   }
