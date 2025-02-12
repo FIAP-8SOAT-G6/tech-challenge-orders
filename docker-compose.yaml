@@ -66,6 +66,7 @@ services:
     container_name: orders-api
     depends_on:
       - orders-db
+      - orders-redis
     environment:
       PORT_SERVER: ${ORDERS_CONTAINER_PORT_SERVER}
       DATABASE_PORT: ${ORDERS_PORT_DB}
@@ -75,6 +76,10 @@ services:
       DATABASE_PASSWORD: ${DATABASE_PASSWORD}
       DATABASE_DIALECT: ${DATABASE_DIALECT}
 
+      CACHE_NAME: ${REDIS_DATABASE}
+      CACHE_HOST: ${REDIS_HOST}
+      CACHE_PORT: ${REDIS_PORT}
+      
       PRODUCTS_SERVICE_HOST: lanchonete-node
       PRODUCTS_SERVICE_PORT: ${LANCHONETE_CONTAINER_PORT_SERVER}
 
@@ -90,11 +95,21 @@ services:
     volumes:
       - node_data:/home/node/app
 
+  orders-redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fiap
+
 volumes:
   lanchonete_db_data:
   lanchonete_node_data:
   db_data:
   node_data:
+  redis_data:
 
 networks:
   fiap:
