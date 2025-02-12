@@ -8,7 +8,7 @@ import { CachedCustomer } from "../infrastructure/cache/CustomerCacheSchema";
 const { CUSTOMERS_SERVICE_HOST, CUSTOMERS_SERVICE_PORT } = process.env;
 
 const CUSTOMER_CACHE_PREFIX = "customer";
-const CACHE_EXPIRATION = 10;
+const CACHE_EXPIRATION_IN_MS = 60 * 5;
 
 export default class CustomersService implements CustomersSource {
   constructor(private cacheClientWrapper: RedisClient) {}
@@ -81,7 +81,7 @@ export default class CustomersService implements CustomersSource {
       const key = `${CUSTOMER_CACHE_PREFIX}:${id}`;
       cacheClient.setEx(
         key,
-        CACHE_EXPIRATION,
+        CACHE_EXPIRATION_IN_MS,
         JSON.stringify({ id, cpf, name, email })
       );
     } catch (error: any) {
