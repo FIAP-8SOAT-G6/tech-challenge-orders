@@ -14,10 +14,10 @@ configMapData:
   DATABASE_USER: "postgres"
   DATABASE_DIALECT: "postgres"
 
-  CACHE_HOST: orders-cache-gplmpv.serverless.use1.cache.amazonaws.com
-  CACHE_PORT: "6379"
-  CACHE_DATABASE: "1"
-  CACHE_TLS: "true"
+  # CACHE_HOST: orders-cache-gplmpv.serverless.use1.cache.amazonaws.com
+  # CACHE_PORT: "6379"
+  # CACHE_DATABASE: "1"
+  # CACHE_TLS: "true"
 
 secret:
   enabled: true
