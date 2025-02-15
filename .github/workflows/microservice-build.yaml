@@ -1,4 +1,4 @@
-name: Microservice - Continuous Integration / Build
+name: CI - Microservice Build & Test
 
 on:
   push:
