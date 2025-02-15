@@ -2,13 +2,12 @@
 configMapData:
   API_PORT: "31200"
   PORT_SERVER: "8080"
-  MONOLITH_PORT: "8080"
-  MONOLITH_HOST: "lanchonete-service"
 
-  PRODUCTS_SERVICE_HOST: lanchonete-service
-  PRODUCTS_SERVICE_PORT: "8081"
-  CUSTOMERS_SERVICE_HOST: lanchonete-service
-  CUSTOMERS_SERVICE_PORT: "8081"
+  PRODUCTS_SERVICE_HOST: products-service
+  PRODUCTS_SERVICE_PORT: "8080"
+
+  CUSTOMERS_SERVICE_HOST: customer-service
+  CUSTOMERS_SERVICE_PORT: "8080"
 
   DATABASE_HOST: orders-db
   DATABASE_PORT: "5432"
@@ -16,15 +15,15 @@ configMapData:
   DATABASE_USER: "postgres"
   DATABASE_DIALECT: "postgres"
 
-  CACHE_HOST: orders-cache-gplmpv.serverless.use1.cache.amazonaws.com
-  CACHE_PORT: "6379"
-  CACHE_DATABASE: "1"
-  CACHE_TLS: "true"
+  # CACHE_HOST: orders-cache-gplmpv.serverless.use1.cache.amazonaws.com
+  # CACHE_PORT: "6379"
+  # CACHE_DATABASE: "1"
+  # CACHE_TLS: "true"
 
 secret:
   enabled: true
   data:
-    DATABASE_PASSWORD: "TVRJek5EVTI="
+    DATABASE_PASSWORD: "MTIzNDU2"
 
 # externalServices:
 #   - name: orders-db
