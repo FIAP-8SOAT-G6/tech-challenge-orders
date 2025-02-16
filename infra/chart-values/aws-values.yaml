@@ -22,7 +22,7 @@ configMapData:
 secret:
   enabled: true
   data:
-    DATABASE_PASSWORD: "TVRJek5EVTI="
+    DATABASE_PASSWORD: "MTIzNDU2"
 
 # externalServices:
 #   - name: orders-db
