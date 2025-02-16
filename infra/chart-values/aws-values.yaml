@@ -29,7 +29,7 @@ secret:
 #     externalName: lanchonete-database.ccyadp9cu3n9.us-east-1.rds.amazonaws.com
 
 image:
-  repository: "045628470274.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/orders-vitorrafael"
+  repository: "045628470274.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/orders"
   tag: "latest"
 
 service:
