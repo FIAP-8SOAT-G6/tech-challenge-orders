@@ -12,7 +12,7 @@ export default class OrderModelDataSource implements OrderDataSource {
     const createdOrder = await OrderModel.create({
       status,
       code,
-      customerId: customerId,
+      customerId,
       paymentStatus,
     });
 
@@ -107,7 +107,7 @@ export default class OrderModelDataSource implements OrderDataSource {
       code: databaseOrder.code,
       status: databaseOrder.status,
       totalPrice: databaseOrder.totalPrice,
-      customerId: databaseOrder.CustomerId,
+      customerId: databaseOrder.customerId,
       paymentStatus: databaseOrder.paymentStatus,
       items: databaseOrder.Items?.map(
         (databaseItem: any) =>
