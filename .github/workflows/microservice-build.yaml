@@ -30,6 +30,9 @@ jobs:
       - name: Tests & Coverage
         run: npm run coverage
 
+      - name: Tests & Coverage BDD
+        run: npm run bdd
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
