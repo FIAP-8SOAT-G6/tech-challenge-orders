@@ -1,5 +1,8 @@
 # Tech Challenge | Orders Microservice
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=FIAP-8SOAT-G6_tech-challenge-orders&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=FIAP-8SOAT-G6_tech-challenge-orders)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=FIAP-8SOAT-G6_tech-challenge-orders&metric=coverage)](https://sonarcloud.io/summary/new_code?id=FIAP-8SOAT-G6_tech-challenge-orders)
+
 Microsserviço reponsável pelo gerenciamento de pedidos do Tech Challenge Lanchonete.
 
 ### Tecnologias Utilizadas
