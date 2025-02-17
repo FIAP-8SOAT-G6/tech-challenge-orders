@@ -6,7 +6,8 @@ Microsserviço reponsável pelo gerenciamento de pedidos do Tech Challenge Lanch
 
 - DevOps: SonarQube, GitHub Actions, Docker
 - TypeScript & Node.JS
-- PostgreSQL
+- SQL: PostgreSQL
+- NoSQL: AWS Elasticache
 
 ### Funcionalidades
 
