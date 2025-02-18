@@ -14,15 +14,15 @@ configMapData:
   DATABASE_USER: "postgres"
   DATABASE_DIALECT: "postgres"
 
-  CACHE_HOST: tcl-orders.gplmpv.ng.0001.use1.cache.amazonaws.com
+  CACHE_HOST: tcl-orders.ynpq2p.ng.0001.use1.cache.amazonaws.com
   CACHE_PORT: "6379"
   CACHE_DATABASE: "1"
   CACHE_TLS: "true"
 
-  MERCADO_PAGO_USER_ID: "2127112837"
-  MERCADO_PAGO_ACCESS_TOKEN: "APP_USR-8748624691978985-120119-95e4568914e9f53d08228082911d583f-2127112837"
-  MERCADO_PAGO_POINT_OF_SALE_ID: "FIAPTCVENDEDORPOS1"
-  NOTIFICATION_URL_HOST: http://a08a6972914de4700a523822e077d3ad-1975528089.us-east-1.elb.amazonaws.com
+  MERCADO_PAGO_USER_ID: "2276121958"
+  MERCADO_PAGO_ACCESS_TOKEN: "APP_USR-7010877515049958-021719-ca6f540e548c46267a3e54c2162cb2ba-2276121958"
+  MERCADO_PAGO_POINT_OF_SALE_ID: "10203045"
+  NOTIFICATION_URL_HOST: http://a46b3f6038f8646f08793f724206d017-1372074634.us-east-1.elb.amazonaws.com
 
 secret:
   enabled: true
@@ -31,10 +31,10 @@ secret:
 
 externalServices:
   - name: orders-db
-    externalName: order-database.ccyadp9cu3n9.us-east-1.rds.amazonaws.com
+    externalName: order-database.cbwo208oqr0s.us-east-1.rds.amazonaws.com
 
 image:
-  repository: "045628470274.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/orders"
+  repository: "301067586589.dkr.ecr.us-east-1.amazonaws.com/tech-challenge-lanchonete/orders"
   tag: "latest"
 
 service:
